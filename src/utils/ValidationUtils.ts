@@ -1,4 +1,4 @@
-import { ValidationResult } from '../types';
+import { ValidationResult } from '../types/index';
 
 export const MIN_MEMORY = 2048; // 2,048 MB
 export const MAX_MEMORY = 8388608; // 8,388,608 MB
