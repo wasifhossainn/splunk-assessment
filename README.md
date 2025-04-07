@@ -1,46 +1,92 @@
-# Getting Started with Create React App
+# Server Configuration Tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based frontend tool that allows users to input hardware configurations and receive possible Server Model Options based on predefined rules.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- CPU Model selection (X86, Power, ARM)
+- Memory Size input with validation
+- GPU Accelerator Card option
+- Real-time server model recommendations
+- Input validation and error handling
+- Modern Material-UI interface
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation
 
-### `npm test`
+1. Clone the repository:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone <repository-url>
+cd splunk-server-composer
+```
 
-### `npm run build`
+2. Install dependencies:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Start the development server:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+The application will open in your default browser at `http://localhost:3000`.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Select a CPU Model from the dropdown menu
+2. Enter the Memory Size in MB (must be a multiple of 1024 and a power of 2)
+3. Toggle the GPU Accelerator Card checkbox if needed
+4. Click "Find Server Models" to see available server options
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Server Model Rules
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### High Density Server
 
-## Learn More
+- Requires GPU Accelerator Card
+- Requires ARM CPU
+- Requires ≥ 524,288MB memory
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Mainframe
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Requires Power CPU
+- Must follow memory constraints
+
+### 4U Rack Server & Tower Server
+
+- Memory ≥ 131,072MB → Either 4U Rack Server or Tower Server
+- Memory < 131,072MB → Only Tower Server
+- Power CPU can be used for both
+
+### Minimum Memory Requirement
+
+- Any model must have at least 2,048MB memory
+
+## Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+## Building for Production
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+The build files will be created in the `build` directory.
+
+## License
+
+MIT

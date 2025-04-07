@@ -74,11 +74,14 @@ const ConfigurationForm: React.FC = () => {
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel>CPU Model</InputLabel>
+          <InputLabel id="cpu-model-label" htmlFor="cpu-model">CPU Model</InputLabel>
           <Select
+            id="cpu-model"
+            labelId="cpu-model-label"
             value={config.cpuType}
             label="CPU Model"
-            onChange={(e: SelectChangeEvent<CPUType>) => setConfig({ ...config, cpuType: e.target.value as CPUType })}
+            onChange={(e: SelectChangeEvent<string>) => setConfig({ ...config, cpuType: e.target.value as CPUType })}
+            inputProps={{ 'aria-labelledby': 'cpu-model-label' }} // Ensure accessibility
           >
             <MenuItem value="X86">X86</MenuItem>
             <MenuItem value="Power">Power</MenuItem>
@@ -88,22 +91,28 @@ const ConfigurationForm: React.FC = () => {
 
         <FormControl fullWidth error={!!error} sx={{ mb: 2 }}>
           <TextField
+            id="memory-size"
             label="Memory Size (MB)"
             value={memoryInput}
             onChange={handleMemoryChange}
             error={!!error}
             placeholder="Enter memory size (e.g., 2,048)"
+            inputProps={{ 'aria-labelledby': 'memory-size-label' }}
           />
-          <FormHelperText>
-            {error || 'Enter memory size in MB (must be a multiple of 1,024 and a power of 2)'}
-          </FormHelperText>
+          {error && (
+            <FormHelperText id="memory-size-error" error>
+              {error}
+            </FormHelperText>
+          )}
         </FormControl>
 
         <FormControlLabel
           control={
             <Checkbox
+              id="gpu-accelerator"
               checked={config.hasGpuAccelerator}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setConfig({ ...config, hasGpuAccelerator: e.target.checked })}
+              inputProps={{ 'aria-labelledby': 'gpu-accelerator-label' }} // Ensure accessibility
             />
           }
           label="GPU Accelerator Card"
@@ -115,7 +124,7 @@ const ConfigurationForm: React.FC = () => {
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, backgroundColor: 'rgb(25, 118, 210)' }} // Explicitly set the background color
         >
           Find Server Models
         </Button>
@@ -144,4 +153,4 @@ const ConfigurationForm: React.FC = () => {
   );
 };
 
-export default ConfigurationForm; 
+export default ConfigurationForm;
