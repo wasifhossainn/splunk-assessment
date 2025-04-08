@@ -10,11 +10,16 @@ This project is a React-based application for configuring server models based on
 - Displays available server models based on the configuration
 - Handles invalid configurations with a "No Options" message
 
+## Live Demo
+
+The application is deployed on GitHub Pages. You can access it here:  
+[https://wasifhossainn.github.io/splunk-assessment/](https://wasifhossainn.github.io/splunk-assessment/)
+
 ## Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/splunk-assessment.git
+   git clone https://github.com/wasifhossainn/splunk-assessment.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -25,7 +30,7 @@ This project is a React-based application for configuring server models based on
    npm install
    ```
 
-## Running the Application
+## Running the Application Locally
 
 Start the development server:
 
@@ -60,7 +65,7 @@ If a test fails, use `screen.debug()` in the test file to inspect the DOM and ve
 
 ## Folder Structure
 
-- `src/components`: Contains React components like `ConfigurationForm`.
+- `src/components`: Contains React components like `ConfigurationForm` and `ResultsDisplay`.
 - `src/utils`: Utility functions for validation and rules engine.
 - `src/types`: Type definitions for the application.
 
@@ -77,6 +82,19 @@ The `ConfigurationForm` component allows users to configure server models. It in
 
 - Displays error messages for invalid memory inputs.
 - Shows "No Options" when no server models match the configuration.
+
+## Deployment
+
+The application is deployed to GitHub Pages. To deploy updates:
+
+1. Build the application:
+   ```bash
+   npm run build
+   ```
+2. Deploy to GitHub Pages:
+   ```bash
+   npm run deploy
+   ```
 
 ## Contributing
 
