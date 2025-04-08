@@ -1,73 +1,39 @@
-# Server Configuration Tool
+# Splunk Assessment
 
-A React-based frontend tool that allows users to input hardware configurations and receive possible Server Model Options based on predefined rules.
+This project is a React-based application for configuring server models based on user inputs.
 
 ## Features
 
-- CPU Model selection (X86, Power, ARM)
-- Memory Size input with validation
-- GPU Accelerator Card option
-- Real-time server model recommendations
-- Input validation and error handling
-- Modern Material-UI interface
-
-## Prerequisites
-
-- Node.js (v14 or higher)
-- npm (v6 or higher)
+- Select CPU Model (X86, Power, ARM)
+- Input memory size with validation
+- Option to include a GPU Accelerator Card
+- Displays available server models based on the configuration
+- Handles invalid configurations with a "No Options" message
 
 ## Installation
 
 1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/splunk-assessment.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd splunk-assessment
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-git clone <repository-url>
-cd splunk-server-composer
-```
+## Running the Application
 
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Start the development server:
+Start the development server:
 
 ```bash
 npm start
 ```
 
-The application will open in your default browser at `http://localhost:3000`.
-
-## Usage
-
-1. Select a CPU Model from the dropdown menu
-2. Enter the Memory Size in MB (must be a multiple of 1024 and a power of 2)
-3. Toggle the GPU Accelerator Card checkbox if needed
-4. Click "Find Server Models" to see available server options
-
-## Server Model Rules
-
-### High Density Server
-
-- Requires GPU Accelerator Card
-- Requires ARM CPU
-- Requires ≥ 524,288MB memory
-
-### Mainframe
-
-- Requires Power CPU
-- Must follow memory constraints
-
-### 4U Rack Server & Tower Server
-
-- Memory ≥ 131,072MB → Either 4U Rack Server or Tower Server
-- Memory < 131,072MB → Only Tower Server
-- Power CPU can be used for both
-
-### Minimum Memory Requirement
-
-- Any model must have at least 2,048MB memory
+The application will be available at `http://localhost:3000`.
 
 ## Testing
 
@@ -77,16 +43,58 @@ Run the test suite:
 npm test
 ```
 
-## Building for Production
+### Key Test Cases
 
-Create a production build:
+1. **Invalid Memory Input**:
+   - Ensures an error message is displayed for memory sizes below 2048 MB.
+2. **Valid ARM Configuration**:
+   - Displays "High Density Server" for valid ARM configurations.
+3. **Valid Power Configuration**:
+   - Displays "Mainframe" for valid Power configurations.
+4. **Invalid Configuration**:
+   - Displays "No Options" when no server models match the configuration.
 
-```bash
-npm run build
-```
+### Debugging Tests
 
-The build files will be created in the `build` directory.
+If a test fails, use `screen.debug()` in the test file to inspect the DOM and verify the rendered output.
+
+## Folder Structure
+
+- `src/components`: Contains React components like `ConfigurationForm`.
+- `src/utils`: Utility functions for validation and rules engine.
+- `src/types`: Type definitions for the application.
+
+## ConfigurationForm Component
+
+The `ConfigurationForm` component allows users to configure server models. It includes:
+
+- A dropdown for selecting the CPU model.
+- A text field for entering memory size with validation.
+- A checkbox for enabling/disabling the GPU Accelerator Card.
+- A submit button to find matching server models.
+
+### Error Handling
+
+- Displays error messages for invalid memory inputs.
+- Shows "No Options" when no server models match the configuration.
+
+## Contributing
+
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Description of changes"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature-name
+   ```
+5. Open a pull request.
 
 ## License
 
-MIT
+This project is licensed under the MIT License.

@@ -18,53 +18,104 @@ import { CPUType, ServerConfiguration } from '../types';
 import { validateMemorySize, parseMemoryInput, formatMemorySize } from '../utils/ValidationUtils';
 import { getServerModels } from '../utils/RulesEngine';
 
+/**
+ * ConfigurationForm Component
+ * 
+ * This component allows users to configure server models by selecting a CPU type,
+ * entering memory size, and optionally enabling a GPU accelerator card. It validates
+ * user inputs and displays available server models or error messages based on the configuration.
+ */
 const ConfigurationForm: React.FC = () => {
+  // State for managing the server configuration
   const [config, setConfig] = useState<ServerConfiguration>({
     cpuType: 'X86',
     memorySize: 2048,
     hasGpuAccelerator: false,
   });
+
+  // State for managing memory input as a string
   const [memoryInput, setMemoryInput] = useState<string>('2,048');
+
+  // State for managing validation errors
   const [error, setError] = useState<string>('');
+
+  // State for managing the list of server models
   const [serverModels, setServerModels] = useState<string[]>([]);
 
+  // State for managing error messages displayed to the user
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  // State for managing the result message
+  const [result, setResult] = useState<string>('');
+
+  /**
+   * Handles changes to the memory input field.
+   * Validates the input and updates the state accordingly.
+   * 
+   * @param e - The change event from the input field.
+   */
   const handleMemoryChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setMemoryInput(input);
-    
+
     // Clear error when user starts typing
     if (error) setError('');
-    
+
     // Try to parse and format the input
     const parsedValue = parseMemoryInput(input);
     if (parsedValue !== null) {
       const validation = validateMemorySize(parsedValue);
       if (validation.isValid) {
         setMemoryInput(formatMemorySize(parsedValue));
+      } else {
+        setError(validation.message || 'Invalid memory size');
       }
+    } else {
+      setError('Please enter a valid number');
     }
   };
 
+  /**
+   * Handles form submission.
+   * Validates the configuration and fetches matching server models.
+   * 
+   * @param e - The form submission event.
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
+    // Parse and validate memory input
     const parsedMemory = parseMemoryInput(memoryInput);
     if (parsedMemory === null) {
       setError('Please enter a valid number');
+      setResult('');
+      setErrorMessage('No Options');
       return;
     }
 
     const validation = validateMemorySize(parsedMemory);
     if (!validation.isValid) {
       setError(validation.message || 'Invalid memory size');
+      setResult('');
+      setErrorMessage('No Options');
       return;
     }
 
+    // Update configuration and fetch server models
     const newConfig = { ...config, memorySize: parsedMemory };
     setConfig(newConfig);
     const models = getServerModels(newConfig);
-    setServerModels(models.length > 0 ? models : ['No Options']);
+
+    if (models.length > 0) {
+      setServerModels(models);
+      setErrorMessage('');
+      setResult('');
+    } else {
+      setServerModels(['No Options']);
+      setErrorMessage('No Options');
+      setResult('');
+    }
   };
 
   return (
@@ -73,6 +124,7 @@ const ConfigurationForm: React.FC = () => {
         Server Configuration
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        {/* CPU Model Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="cpu-model-label" htmlFor="cpu-model">CPU Model</InputLabel>
           <Select
@@ -89,6 +141,7 @@ const ConfigurationForm: React.FC = () => {
           </Select>
         </FormControl>
 
+        {/* Memory Size Input */}
         <FormControl fullWidth error={!!error} sx={{ mb: 2 }}>
           <TextField
             id="memory-size"
@@ -106,6 +159,7 @@ const ConfigurationForm: React.FC = () => {
           )}
         </FormControl>
 
+        {/* GPU Accelerator Checkbox */}
         <FormControlLabel
           control={
             <Checkbox
@@ -116,9 +170,11 @@ const ConfigurationForm: React.FC = () => {
             />
           }
           label="GPU Accelerator Card"
+          labelPlacement="end" // Ensure proper association
           sx={{ mb: 2 }}
         />
 
+        {/* Submit Button */}
         <Button
           type="submit"
           variant="contained"
@@ -129,6 +185,13 @@ const ConfigurationForm: React.FC = () => {
           Find Server Models
         </Button>
 
+        {/* Error Message */}
+        {errorMessage && <p>{errorMessage}</p>}
+
+        {/* Result Message */}
+        {result && <p>{result}</p>}
+
+        {/* Server Models List */}
         {serverModels.length > 0 && (
           <Box sx={{ mt: 2 }}>
             <Typography variant="h6" gutterBottom>

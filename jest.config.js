@@ -1,7 +1,9 @@
 module.exports = {
-  testEnvironment: 'node',
-  testMatch: ['**/__tests__/**/*.test.js', '**/__tests__/**/*.test.ts'],
+  testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
 };
